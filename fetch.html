@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper_id{
+        display: grid;
+    }
+
+    .component{
+        display: flex;
+        flex-direction: column;
+        margin: 0.5rem;
+        max-width: 25vh;
+        text-align: center;
+        flex-wrap: nowrap;
+    }
+
+</style>
+<body>
+    <h1>Anime list</h1>
+    <div class="wrapper" id="wrapper_id">
+        <!-- <h3 id="resist-title">this is a wrapper above image</h3>
+        <img src="#" alt="awesome image_url" id="resist"> -->
+    </div>
+</body>
+<script>
+const base_url = 'https://api.jikan.moe/v3/search/manga?q=GTO&page=1/last_page'
+
+function pageLoaded () {
+let wrapperId = document.getElementById('wrapper_id')
+let resist = document.getElementById('resist')
+let resistTitle = document.getElementById('resist-title')
+let imageAnime
+let imageName 
+let divImageAnime
+let fragmentImages = document.createDocumentFragment()
+
+fetch(base_url)
+    .then(res => res.json())
+    .then(data => {
+        console.log(data.results.title)
+        let elementsAnime = data.results.map(serieAnime => {
+            console.log()
+            divImageAnime = document.createElement('div')
+            divImageAnime.innerHTML = 
+            `<div class="component component-${incremento}">
+                <h3>${serieAnime.title}</h3>
+                <img src="${serieAnime.image_url}" alt="imagen mas">
+            </div>`
+
+            // imageAnime = document.createElement('img') //agregar solo las imagenes traidas del API
+            // imageAnime.src = serieAnime.image_url
+            // fragmentImages.appendChild(imageAnime)        
+            fragmentImages.appendChild(divImageAnime)
+        })
+        wrapperId.appendChild(fragmentImages)
+    })
+    .catch(error => alert('pull yourself harder'))
+}
+
+window.addEventListener('load', pageLoaded);
+
+</script>
+</html>
